@@ -1,0 +1,39 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node* prev;
+    Node(int val) {
+        data = val;
+        next = prev = NULL;
+    }
+};
+
+// Function to find size of a doubly linked list
+int sizeOfDoublyList(Node* head) {
+    int count = 0;
+    Node* temp = head;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+
+int main() {
+    // Create doubly linked list: 10 <-> 20 <-> 30
+    Node* head = new Node(10);
+    Node* second = new Node(20);
+    Node* third = new Node(30);
+
+    head->next = second;
+    second->prev = head;
+    second->next = third;
+    third->prev = second;
+
+    cout << "Size of Doubly Linked List = " << sizeOfDoublyList(head) << endl;
+    return 0;
+}
