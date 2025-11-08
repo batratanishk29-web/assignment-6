@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+struct Node {
+    int data;
+    Node* next;
+};
+// Function to print circular linked list
+void displayCircularList(Node* head) {
+    if (head == NULL)
+        return;
+
+    Node* temp = head;
+
+    // Print until we reach head again
+    do {
+        cout << temp->data << " ";
+        temp = temp->next;
+    } while (temp != head);
+
+    // Print head value again
+    cout << head->data;
+}
+
+// Helper function to create new node
+Node* newNode(int val) {
+    Node* node = new Node();
+    node->data = val;
+    node->next = NULL;
+    return node;
+}
+
+int main() {
+    // Creating circular linked list: 20 → 100 → 40 → 80 → 60 → back to 20
+    Node* head = newNode(20);
+    Node* second = newNode(100);
+    Node* third = newNode(40);
+    Node* fourth = newNode(80);
+    Node* fifth = newNode(60);
+
+    head->next = second;
+    second->next = third;
+    third->next = fourth;
+    fourth->next = fifth;
+    fifth->next = head;   // link back to head to make it circular
+
+    displayCircularList(head);
+
+    return 0;
+}
