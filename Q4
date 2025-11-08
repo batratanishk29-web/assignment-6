@@ -1,0 +1,61 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    char data;
+    Node* next;
+    Node* prev;
+};
+
+// Function to check palindrome
+bool isPalindrome(Node* head) {
+    if (head == NULL || head->next == NULL)
+        return true;
+
+    Node* start = head;
+    Node* end = head;
+
+    // Move end to the last node
+    while (end->next != NULL)
+        end = end->next;
+
+    // Compare from both ends
+    while (start != end && start->prev != end) { // odd length && even length palndrome
+        if (start->data != end->data)
+            return false;
+
+        start = start->next;
+        end = end->prev;
+    }
+
+    return true;
+}
+
+// Helper to create new node
+Node* newNode(char ch) {
+    Node* node = new Node();
+    node->data = ch;
+    node->next = node->prev = NULL;
+    return node;
+}
+
+int main() {
+    // Example: D → A → D → A → D  (palindrome)
+    Node* head = newNode('D');
+    Node* n1 = newNode('A');
+    Node* n2 = newNode('D');
+    Node* n3 = newNode('A');
+    Node* n4 = newNode('D');
+
+    head->next = n1;  n1->prev = head;
+    n1->next = n2;    n2->prev = n1;
+    n2->next = n3;    n3->prev = n2;
+    n3->next = n4;    n4->prev = n3;
+
+    if (isPalindrome(head))
+        cout << "Palindrome";
+    else
+        cout << "Not Palindrome";
+
+    return 0;
+}
