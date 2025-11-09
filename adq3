@@ -1,0 +1,105 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+    Node* prev;
+    Node(int x) {
+        data = x;
+        next = prev = NULL;
+    }
+};
+
+// Insert a node at end of DLL
+void insertEnd(Node*& head, int data) {
+    Node* newNode = new Node(data);
+    if (!head) {
+        head = newNode;
+        return;
+    }
+    Node* temp = head;
+    while (temp->next)
+        temp = temp->next;
+
+    temp->next = newNode;
+    newNode->prev = temp;
+}
+
+// Print list forward
+void printList(Node* head) {
+    while (head) {
+        cout << head->data << " ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+// Reverse every group of k nodes
+Node* reverseK(Node* head, int k) {
+    if (!head || k <= 1) return head;
+
+    Node* current = head;
+    Node* newHead = NULL;
+    Node* prevGroupTail = NULL;
+
+    while (current) {  // loop until all nodes are processed
+
+        Node* groupTail = current;  // Tail of this group before reversing
+        Node* prev = NULL;
+        int cnt = 0;
+
+        // Reverse k nodes
+        while (current && cnt < k) { 
+            Node* nextNode = current->next;
+
+            current->next = prev;
+            current->prev = nextNode;
+
+            prev = current;
+            current = nextNode;
+            cnt++;
+        }
+
+        // prev is now the head of the reversed group
+        if (!newHead)
+            newHead = prev;
+
+        // Connect with previous group
+        if (prevGroupTail) {
+            prevGroupTail->next = prev;
+            prev->prev = prevGroupTail;
+        }
+
+        prevGroupTail = groupTail;   // new tail of this group
+    }
+
+    return newHead;
+}
+
+int main() {
+    Node* head = NULL;
+    int n, k, x;
+
+    cout << "Enter number of nodes: ";
+    cin >> n;
+
+    cout << "Enter elements: ";
+    for (int i = 0; i < n; i++) {
+        cin >> x;
+        insertEnd(head, x);
+    }
+
+    cout << "Enter k: ";
+    cin >> k;
+
+    cout << "Original List: ";
+    printList(head);
+
+    head = reverseK(head, k);
+
+    cout << "Reversed List: ";
+    printList(head);
+
+    return 0;
+}
